@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:interview_task/core/models/auth_response_model.dart';
@@ -15,16 +17,7 @@ final authProviderNotifier =
 // Stream auth change status - if auth then update the current user else null
 final authStateChangeProvider = StreamProvider((ref) async* {
   final auth = ref.watch(authProviderNotifier.notifier);
-  final userNotifier = ref.watch(currentUserProvider.notifier);
-
-  await for (final user in auth.authStateChange) {
-    if (user != null) {
-      await auth.getUserDetails(user.uid);
-    } else {
-      userNotifier.removeUser();
-    }
-    yield user;
-  }
+  yield auth;
 });
 
 // auth provider class
@@ -57,7 +50,7 @@ class AuthProvider extends StateNotifier<AsyncValue<AuthResponseModel?>> {
     state = const AsyncValue.loading();
     final response =
         await _authRepository.signIn(email: email, password: password);
-
+    log('${response.code}', name: 'Sign in');
     if (response.code == 0) {
       await getUserDetails(response.user!.id);
     }
@@ -77,6 +70,7 @@ class AuthProvider extends StateNotifier<AsyncValue<AuthResponseModel?>> {
 
 // get user details
   Future<void> getUserDetails(String uid) async {
+    log('trig');
     final response = await _authRepository.getUserDetails(uid);
     if (response.code == 0) {
       _userNotifier.addUser(response.user!);

@@ -56,7 +56,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                   });
                 },
                 icon: Icon(
-                  showPassword ? Icons.visibility : Icons.visibility_off,
+                  showPassword ? Icons.visibility_off : Icons.visibility,
                 ),
               )
             : null,
@@ -77,7 +77,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
             Decorations.focusedErrorBorder(borderColor: AppColor.invalid),
       ),
       obscureText:
-          widget.isEmail || !widget.isPassword || !showPassword ? false : true,
+          widget.isEmail || !widget.isPassword || showPassword ? false : true,
       style: const TextStyle(
         color: AppColor.black,
         fontSize: 16,

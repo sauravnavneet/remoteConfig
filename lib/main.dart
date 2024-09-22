@@ -70,7 +70,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       home: hasInternet
           ? authState.when(
               data: (data) {
-                if (data != null && user != null) {
+                if (user != null) {
                   return const SafeArea(child: HomeScreen());
                 } else {
                   return const SafeArea(child: LoginSignupScreen());
